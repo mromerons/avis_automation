@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="23952" started-at="2019-05-05T07:32:33Z" finished-at="2019-05-05T07:32:57Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="23952" started-at="2019-05-05T07:32:33Z" finished-at="2019-05-05T07:32:57Z">
+      <class name="com.avis.tests.AvisTests">
+        <test-method status="PASS" signature="setupClass()[pri:0, instance:com.avis.tests.AvisTests@c33b74f]" name="setupClass" is-config="true" duration-ms="400" started-at="2019-05-05T07:32:33Z" finished-at="2019-05-05T07:32:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupClass -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:com.avis.tests.AvisTests@c33b74f]" name="setUp" is-config="true" duration-ms="5419" started-at="2019-05-05T07:32:34Z" finished-at="2019-05-05T07:32:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="findCar(java.lang.String, java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.avis.tests.AvisTests@c33b74f]" name="findCar" duration-ms="18035" started-at="2019-05-05T07:32:39Z" data-provider="avisSearchCar" finished-at="2019-05-05T07:32:57Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Aeropuerto De Cancún]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[10/05/2019]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Aeropuerto De La Ciudad De México]]>
+              </value>
+            </param>
+            <param index="3">
+              <value>
+                <![CDATA[15/05/2019]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- findCar -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:com.avis.tests.AvisTests@c33b74f]" name="tearDown" is-config="true" duration-ms="78" started-at="2019-05-05T07:32:57Z" finished-at="2019-05-05T07:32:57Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.avis.tests.AvisTests -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
