@@ -20,7 +20,7 @@ import org.testng.Assert;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class AvisTests extends CommonUtils{
+public class AvisTests {// extends CommonUtils{
 	
 	WebDriver driver;
 	
@@ -42,29 +42,15 @@ public class AvisTests extends CommonUtils{
 	@Test(priority = 0, dataProvider = "avisSearchCar", dataProviderClass = TestProvider.class)
 	public void findCar(String fromPlace, String fromDate, String returnPlace, String returnDate) throws InterruptedException {
 		CarsPage carsPage = new CarsPage(this.driver);
-		carsPage
-			.clickFromPlaceDummy()
-			.fillFromPlace(fromPlace);
-		pause_for(1);
-		carsPage.selectPlaceOption(fromPlace);
-		carsPage
-			.clickFromDate()
-			.setFromDate(fromDate)
-			.closeDatepicker();
-		pause_for(1);
-		carsPage
-			.clickReturnPlace()
-			.fillReturnPlace(returnPlace);
-		pause_for(1);
-		carsPage.selectPlaceOption(returnPlace);
-		carsPage
-			.clickReturnDate()
-			.setReturnDate(returnDate)
-			.closeDatepicker();
-		pause_for(2);
-		ResultsPage resultsPage = carsPage.searchCar();
-		pause_for(5);
 		
+		carsPage.clickFromPlaceDummy().fillFromPlace(fromPlace);
+		carsPage.selectPlaceOption(fromPlace);
+		carsPage.clickFromDate().setFromDate(fromDate).closeDatepicker();
+		carsPage.clickReturnPlace().fillReturnPlace(returnPlace);
+		carsPage.selectPlaceOption(returnPlace);
+		carsPage.clickReturnDate().setReturnDate(returnDate).closeDatepicker();
+		
+		ResultsPage resultsPage = carsPage.searchCar();	
 		resultsPage.showAllCars();
 		resultsPage.orderByPrice();
 		

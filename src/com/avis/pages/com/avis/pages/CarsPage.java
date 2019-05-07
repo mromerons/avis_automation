@@ -3,41 +3,23 @@ package com.avis.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class CarsPage {
+import com.avis.utils.Navigation;
+
+public class CarsPage extends Navigation {
 	
 	private WebDriver driver;
 	
-	// From Fields
+	private By bookingFullForm = By.xpath("//div[@id='booking-form' and @class='with-full-form']");
 	private By fromPlaceDummy = By.id("txtSucursalDummy");
 	private By fromPlace = By.id("txtOficinaRentaInt");
 	private By fromPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), 'Aeropuerto De Cancún')]");
 	private By fromDate = By.id("frenta"); 
-	
-	// Return Fields
 	private By returnPlace = By.id("txtOficinaDevInt");
 	private By returnPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), 'Aeropuerto De La Ciudad De México')]");
 	private By returnDate = By.id("fdev");
-	
 	private By genericPlaceOption;
-	
-	// Search Button
 	private By searchButton = By.id("btnContinuarInt");
-	
-	// Datepicker Close Button
 	private By closeDatepicker = By.id("datepicker-popup-close");
-	
-	
-	
-	private By setPlace(String place) {
-		genericPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), '" + place + "')]");
-		return genericPlaceOption;
-	}
-	
-	public CarsPage selectPlaceOption(String place) {
-		setPlace(place);
-		driver.findElement(this.genericPlaceOption).click();
-		return this;
-	}
 	
 	
 	
@@ -46,72 +28,77 @@ public class CarsPage {
 		this.driver = driver;
 	}
 	
-	public CarsPage clickFromPlaceDummy() {
-		driver.findElement(this.fromPlaceDummy).click();
+	public CarsPage clickFromPlaceDummy() throws InterruptedException {
+		click(driver, this.fromPlaceDummy);
+		clickFromPlace();
+		pause_for(2);
 		return this;
 	}
 	
-	
-	public CarsPage fillFromPlace(String value) {
-		driver.findElement(this.fromPlace).sendKeys(value);
-		return this;
-	}
-	
-	public CarsPage selectFromPlaceOption(){
-		driver.findElement(this.fromPlaceOption).click();
+	public CarsPage fillFromPlace(String value) throws InterruptedException {
+		waitForElementToBeVisible(driver, driver.findElement(bookingFullForm), 10);
+		sendKeys(driver, this.fromPlace, value);
+		pause_for(1);
 		return this;
 	}
 	
 	public CarsPage clickFromPlace() {
-		driver.findElement(this.fromPlace).click();
+		click(driver, this.fromPlace);
 		return this;
 	}
 	
 	public CarsPage clickFromDate() {
-		driver.findElement(this.fromDate).click();
+		click(driver, this.fromDate);
 		return this;
 	}
 	
 	public CarsPage setFromDate(String date) {
-		driver.findElement(this.fromDate).sendKeys(date);
+		sendKeys(driver, this.fromDate, date);
 		return this;
 	}
-	
 	
 	public CarsPage clickReturnPlace() {
-		driver.findElement(this.returnPlace).click();
+		click(driver, this.returnPlace);
 		return this;
 	}
 	
-	public CarsPage fillReturnPlace(String value) {
-		driver.findElement(this.returnPlace).sendKeys(value);
-		return this;
-	}
-	
-	public CarsPage selectReturnPlaceOption() {
-		driver.findElement(this.returnPlaceOption).click();
+	public CarsPage fillReturnPlace(String value) throws InterruptedException {
+		sendKeys(driver, this.returnPlace, value);
+		pause_for(1);
 		return this;
 	}
 	
 	public CarsPage clickReturnDate() {
-		driver.findElement(this.returnDate).click();
+		click(driver, this.returnDate);
 		return this;
 	}
 	
 	public CarsPage setReturnDate(String date) {
-		driver.findElement(this.returnDate).sendKeys(date);
+		sendKeys(driver, this.returnDate, date);
 		return this;
 	}
 	
+	public CarsPage selectPlaceOption(String place) throws InterruptedException {
+		this.setPlace(place);
+		click(driver, this.genericPlaceOption);
+		waitForInvisibilityOfElement(driver, this.genericPlaceOption);
+		return this;
+	}
+	
+	private void setPlace(String place) {
+		genericPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), '" + place + "')]");
+	}
+	
 	public CarsPage closeDatepicker() {
-		driver.findElement(closeDatepicker).click();
+		click(driver, this.closeDatepicker);
+		waitForInvisibilityOfElement(driver, this.closeDatepicker);
 		return this;
 	}
 	
 	public ResultsPage searchCar() {	
-		driver.findElement(searchButton).click();
+		waitForJs(driver);
+		click(driver, this.searchButton);
 		return new ResultsPage(driver);
 	}
-	
 	
 }
