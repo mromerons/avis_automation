@@ -37,7 +37,6 @@ public class CommonUtils {
 			@Override
 			public Boolean apply(WebDriver driver) {
 				try {
-					System.out.println("jQuery to load:" + (Long) js.executeScript("return jQuery.active"));
 					return ((Long) js.executeScript("return jQuery.active") == 0);
 				} catch (Exception e) {
 					return true;
@@ -49,7 +48,6 @@ public class CommonUtils {
 		ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
-				System.out.println("JavaScript to load:" + js.executeScript("return document.readyState").toString());
 				return js.executeScript("return document.readyState").toString().equals("complete");
 			}
 		};

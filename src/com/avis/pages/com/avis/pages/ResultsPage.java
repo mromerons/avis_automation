@@ -1,13 +1,16 @@
 package com.avis.pages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ResultsPage {
+import com.avis.utils.Navigation;
+
+public class ResultsPage extends Navigation{
 	
 	private WebDriver driver;
 	
@@ -20,7 +23,7 @@ public class ResultsPage {
 	private By carFilterButton = By.id("divfiltroAutos");
 	//private By carFilterCars = By.xpath("//li[@data-vehicle-type='AUTOS']");
 	//private By carFilterTrucksSUV = By.xpath("//li[@data-vehicle-type='CAMIONETAS/SUV']");
-	private By carFilterAll = By.xpath("//li[@data-vehicle-type='All Vehicles']");
+	private By carFilterAllOption = By.xpath("//li[@data-vehicle-type='All Vehicles']");
 	
 	
 	public ResultsPage(WebDriver driver) {
@@ -29,30 +32,41 @@ public class ResultsPage {
 	}
 	
 	public void showAllCars() {
-		driver.findElement(carFilterButton).click();
-		driver.findElement(carFilterAll).click();
+		click(driver, carFilterButton);
+		click(driver, carFilterAllOption);
 	}
 	
-	public ArrayList<String> getAllPrices() {
-		ArrayList<String> allCarPrices = new ArrayList<String>();
+	public ArrayList<Integer> getAllPrices() {
+		ArrayList<Integer> allCarPrices = new ArrayList<Integer>();
 		List<WebElement> allCarPricesRaw = driver.findElements(priceElements);
 		for(WebElement carPrice : allCarPricesRaw) {
-			allCarPrices.add(carPrice.getText().replaceAll("[$,[a-zA-Z]+\\s+]", ""));
-		}		
+			allCarPrices.add(Integer.valueOf(carPrice.getText().replaceAll("[$,[a-zA-Z]+\\s+]", "")));
+		}
 		return allCarPrices;
 	}
 	
-	public ResultsPage orderByPrice() {
-		driver.findElement(sortButton).click();
-		driver.findElement(priceSortDescOption).click();
-		driver.findElement(sortButton).click();
-		driver.findElement(priceSortAscOption).click();
+	public ResultsPage orderByPriceAsc() {
+		click(driver, sortButton);
+		click(driver, priceSortDescOption);
+		click(driver, sortButton);
+		click(driver, priceSortAscOption);
 		return this;
 	}
 	
-	public void printList(ArrayList<String> list) {
-		for(String listItem : list) {
-			System.out.println("item: " + listItem);
-		}
+	public ResultsPage orderByPriceDesc() {
+		click(driver, sortButton);
+		click(driver, priceSortDescOption);
+		return this;
 	}
+	
+	public ArrayList<Integer> orderPricesManuallyAsc(ArrayList<Integer> carPrices) {
+		Collections.sort(carPrices);
+		return carPrices;
+	}
+	
+	public ArrayList<Integer> orderPricesManuallyDesc(ArrayList<Integer> carPrices) {
+		Collections.sort(carPrices, Collections.reverseOrder());
+		return carPrices;
+	}
+	
 }

@@ -12,15 +12,13 @@ public class CarsPage extends Navigation {
 	private By bookingFullForm = By.xpath("//div[@id='booking-form' and @class='with-full-form']");
 	private By fromPlaceDummy = By.id("txtSucursalDummy");
 	private By fromPlace = By.id("txtOficinaRentaInt");
-	private By fromPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), 'Aeropuerto De Cancún')]");
 	private By fromDate = By.id("frenta"); 
 	private By returnPlace = By.id("txtOficinaDevInt");
-	private By returnPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), 'Aeropuerto De La Ciudad De México')]");
 	private By returnDate = By.id("fdev");
 	private By genericPlaceOption;
 	private By searchButton = By.id("btnContinuarInt");
+	private By datePicker = By.id("datepicker-popup");
 	private By closeDatepicker = By.id("datepicker-popup-close");
-	
 	
 	
 	public CarsPage(WebDriver driver) {
@@ -28,71 +26,88 @@ public class CarsPage extends Navigation {
 		this.driver = driver;
 	}
 	
-	public CarsPage clickFromPlaceDummy() throws InterruptedException {
+	public CarsPage setFromPlace(String value) throws InterruptedException {
+		clickFromPlaceDummy();
+		fillFromPlace(value);
+		selectPlaceOption(value);
+		return this;
+	}
+	
+	public CarsPage setFromDate(String value) {
+		clickFromDate();
+		fillFromDate(value);
+		closeDatepicker();
+		return this;
+	}
+	
+	public CarsPage setReturnPlace(String value) throws InterruptedException {
+		clickReturnPlace();
+		fillReturnPlace(value);
+		selectPlaceOption(value);
+		return this;
+	}
+	
+	public CarsPage setReturnDate(String value) {
+		clickReturnDate();
+		fillReturnDate(value);
+		closeDatepicker();
+		return this;
+	}
+	
+	public void clickFromPlaceDummy() throws InterruptedException {
 		click(driver, this.fromPlaceDummy);
 		clickFromPlace();
 		pause_for(2);
-		return this;
 	}
 	
-	public CarsPage fillFromPlace(String value) throws InterruptedException {
+	public void clickFromPlace() {
+		click(driver, this.fromPlace);
+	}
+	
+	public void fillFromPlace(String value) throws InterruptedException {
 		waitForElementToBeVisible(driver, driver.findElement(bookingFullForm), 10);
 		sendKeys(driver, this.fromPlace, value);
 		pause_for(1);
-		return this;
 	}
 	
-	public CarsPage clickFromPlace() {
-		click(driver, this.fromPlace);
-		return this;
-	}
-	
-	public CarsPage clickFromDate() {
+	public void clickFromDate() {
 		click(driver, this.fromDate);
-		return this;
 	}
 	
-	public CarsPage setFromDate(String date) {
+	public void fillFromDate(String date) {
 		sendKeys(driver, this.fromDate, date);
-		return this;
 	}
 	
-	public CarsPage clickReturnPlace() {
+	public void clickReturnPlace() {
 		click(driver, this.returnPlace);
-		return this;
 	}
 	
-	public CarsPage fillReturnPlace(String value) throws InterruptedException {
+	public void fillReturnPlace(String value) throws InterruptedException {
 		sendKeys(driver, this.returnPlace, value);
 		pause_for(1);
-		return this;
 	}
 	
-	public CarsPage clickReturnDate() {
+	public void clickReturnDate() {
 		click(driver, this.returnDate);
-		return this;
 	}
 	
-	public CarsPage setReturnDate(String date) {
+	public void fillReturnDate(String date) {
 		sendKeys(driver, this.returnDate, date);
-		return this;
 	}
 	
-	public CarsPage selectPlaceOption(String place) throws InterruptedException {
+	public void selectPlaceOption(String place) throws InterruptedException {
 		this.setPlace(place);
 		click(driver, this.genericPlaceOption);
 		waitForInvisibilityOfElement(driver, this.genericPlaceOption);
-		return this;
 	}
 	
 	private void setPlace(String place) {
 		genericPlaceOption = By.xpath("//div[@class='angucomplete-result-fullname' and contains(normalize-space(), '" + place + "')]");
 	}
 	
-	public CarsPage closeDatepicker() {
+	public void closeDatepicker() {
 		click(driver, this.closeDatepicker);
-		waitForInvisibilityOfElement(driver, this.closeDatepicker);
-		return this;
+		waitForInvisibilityOfElement(driver, datePicker);
 	}
 	
 	public ResultsPage searchCar() {	

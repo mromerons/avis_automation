@@ -3,7 +3,6 @@ package com.avis.tests;
 import com.avis.pages.CarsPage;
 import com.avis.pages.ResultsPage;
 import com.avis.provider.TestProvider;
-import com.avis.utils.CommonUtils;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -11,7 +10,6 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
@@ -20,7 +18,7 @@ import org.testng.Assert;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class AvisTests {// extends CommonUtils{
+public class AvisTests {
 	
 	WebDriver driver;
 	
@@ -39,30 +37,69 @@ public class AvisTests {// extends CommonUtils{
 		driver.get("https://avis.mx/");
 	}
 	
-	@Test(priority = 0, dataProvider = "avisSearchCar", dataProviderClass = TestProvider.class)
+	@Test(testName = "findCar", priority = 0, dataProvider = "avisSearchCar", dataProviderClass = TestProvider.class)
 	public void findCar(String fromPlace, String fromDate, String returnPlace, String returnDate) throws InterruptedException {
 		CarsPage carsPage = new CarsPage(this.driver);
 		
-		carsPage.clickFromPlaceDummy().fillFromPlace(fromPlace);
-		carsPage.selectPlaceOption(fromPlace);
-		carsPage.clickFromDate().setFromDate(fromDate).closeDatepicker();
-		carsPage.clickReturnPlace().fillReturnPlace(returnPlace);
-		carsPage.selectPlaceOption(returnPlace);
-		carsPage.clickReturnDate().setReturnDate(returnDate).closeDatepicker();
+		carsPage
+			.setFromPlace(fromPlace)
+			.setFromDate(fromDate)
+			.setReturnPlace(returnPlace)
+			.setReturnDate(returnDate);
+		
+		
+		ResultsPage resultsPage = carsPage.searchCar();	
+		//Assert.assertEquals(actual, expected);
+	}
+	
+	@Test(testName = "OrderCarPricesAsc", priority = 0, dataProvider = "avisSearchCar", dataProviderClass = TestProvider.class)
+	public void OrderCarPricesAsc(String fromPlace, String fromDate, String returnPlace, String returnDate) throws InterruptedException {
+		CarsPage carsPage = new CarsPage(this.driver);
+		
+		carsPage
+			.setFromPlace(fromPlace)
+			.setFromDate(fromDate)
+			.setReturnPlace(returnPlace)
+			.setReturnDate(returnDate);
+		
 		
 		ResultsPage resultsPage = carsPage.searchCar();	
 		resultsPage.showAllCars();
-		resultsPage.orderByPrice();
 		
-		ArrayList<String> carPrices = resultsPage.getAllPrices();
-		System.out.println("Prices in raw format   : "+ carPrices);
-		Collections.sort(carPrices);
-		System.out.println("\n-- Recomended car price is excluded from test --\n");
-		System.out.println("Ordered Prices Manually: " + carPrices);
-		ArrayList<String> orderedCarPrices = resultsPage.getAllPrices();
-		System.out.println("Ordered prices by page : " + orderedCarPrices);
+		ArrayList<Integer> carPrices = resultsPage.getAllPrices();
+		carPrices = resultsPage.orderPricesManuallyAsc(carPrices);
+		resultsPage.orderByPriceAsc();
+		ArrayList<Integer> carPricesOrdered = resultsPage.getAllPrices();
 		
-		Assert.assertEquals(carPrices, orderedCarPrices);
+		
+		System.out.println(carPrices);
+		System.out.println(carPricesOrdered);
+		Assert.assertEquals(carPrices, carPricesOrdered);
+	}
+	
+	@Test(testName = "OrderCarPricesDesc", priority = 0, dataProvider = "avisSearchCar", dataProviderClass = TestProvider.class)
+	public void OrderCarPricesDesc(String fromPlace, String fromDate, String returnPlace, String returnDate) throws InterruptedException {
+		CarsPage carsPage = new CarsPage(this.driver);
+		
+		carsPage
+			.setFromPlace(fromPlace)
+			.setFromDate(fromDate)
+			.setReturnPlace(returnPlace)
+			.setReturnDate(returnDate);
+		
+		
+		ResultsPage resultsPage = carsPage.searchCar();	
+		resultsPage.showAllCars();
+		
+		ArrayList<Integer> carPrices = resultsPage.getAllPrices();
+		carPrices = resultsPage.orderPricesManuallyDesc(carPrices);
+		resultsPage.orderByPriceDesc();
+		ArrayList<Integer> carPricesOrdered = resultsPage.getAllPrices();
+		
+		
+		System.out.println(carPrices);
+		System.out.println(carPricesOrdered);
+		Assert.assertEquals(carPrices, carPricesOrdered);
 	}
 	
 	@AfterMethod
